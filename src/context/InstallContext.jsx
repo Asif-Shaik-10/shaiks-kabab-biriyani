@@ -17,11 +17,14 @@ export const InstallProvider = ({ children }) => {
 
         // Check if already installed
         const checkInstalled = () => {
-            const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
+                window.navigator.standalone ||
+                document.referrer.includes('android-app://');
             setIsInstalled(isStandalone);
+            return isStandalone;
         };
 
-        checkInstalled();
+        const isAppInstalled = checkInstalled();
         window.addEventListener('appinstalled', () => {
             setIsInstalled(true);
             setDeferredPrompt(null);
@@ -36,19 +39,21 @@ export const InstallProvider = ({ children }) => {
 
         window.addEventListener('beforeinstallprompt', handler);
 
-        // For iOS, show banner after delay if not installed
-        if (isIosDevice && !isInstalled) {
-            const timer = setTimeout(() => {
+        let timer;
+        // Show banner after delay if not installed (for all platforms)
+        if (!isAppInstalled) {
+            timer = setTimeout(() => {
                 setShowBanner(true);
-            }, 3000);
-            return () => {
-                clearTimeout(timer);
-                window.removeEventListener('beforeinstallprompt', handler);
-            };
+            }, 5000); // Show after 5 seconds to not be too intrusive
         }
 
-        return () => window.removeEventListener('beforeinstallprompt', handler);
-    }, []);
+        return () => {
+            if (timer) {
+                clearTimeout(timer);
+            }
+            window.removeEventListener('beforeinstallprompt', handler);
+        };
+    }, [isInstalled]); // Added isInstalled to dependency array to re-evaluate timer if installation status changes
 
     const installApp = async () => {
         if (isIOS) {
