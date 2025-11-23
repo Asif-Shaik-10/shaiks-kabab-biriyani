@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useInstall } from '../context/InstallContext';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,7 @@ const Navbar = () => {
     const location = useLocation();
     const { getCartCount } = useCart();
     const { isAuthenticated, user, logout } = useAuth();
+    const { isInstalled, deferredPrompt, isIOS, setShowBanner } = useInstall();
 
     const links = [
         { name: 'Home', path: '/' },
@@ -57,6 +59,17 @@ const Navbar = () => {
 
                     {/* Cart & User Menu */}
                     <div className="flex items-center gap-4">
+                        {/* Install App Button */}
+                        {!isInstalled && (
+                            <button
+                                onClick={() => setShowBanner(true)}
+                                className="hidden md:flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-lg hover:from-orange-600 hover:to-red-700 transition-all shadow-md"
+                            >
+                                <Download size={18} />
+                                <span className="text-sm font-medium">Install App</span>
+                            </button>
+                        )}
+
                         <Link to="/cart" className="relative p-2 text-gray-300 hover:text-secondary transition-colors">
                             <ShoppingCart size={24} />
                             {getCartCount() > 0 && (
@@ -196,6 +209,19 @@ const Navbar = () => {
                                         Sign Up
                                     </Link>
                                 </>
+                            )}
+                            {/* Mobile Install Button */}
+                            {!isInstalled && (
+                                <button
+                                    onClick={() => {
+                                        setShowBanner(true);
+                                        setIsOpen(false);
+                                    }}
+                                    className="flex w-full items-center gap-2 px-3 py-2 rounded-md text-base font-medium text-white bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+                                >
+                                    <Download size={18} />
+                                    <span>Install App</span>
+                                </button>
                             )}
                         </div>
                     </motion.div>

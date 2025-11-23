@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
+import { InstallProvider } from './context/InstallContext';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Menu from './pages/Menu';
@@ -86,7 +87,9 @@ function App() {
   return (
     <AuthProvider>
       <CartProvider>
-        <AppContent />
+        <InstallProvider>
+          <AppContent />
+        </InstallProvider>
       </CartProvider>
     </AuthProvider>
   );
