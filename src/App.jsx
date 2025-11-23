@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { InstallProvider } from './context/InstallContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Menu from './pages/Menu';
@@ -83,15 +84,19 @@ function AppContent() {
   );
 }
 
+
+
 function App() {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <InstallProvider>
-          <AppContent />
-        </InstallProvider>
-      </CartProvider>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <CartProvider>
+          <InstallProvider>
+            <AppContent />
+          </InstallProvider>
+        </CartProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 

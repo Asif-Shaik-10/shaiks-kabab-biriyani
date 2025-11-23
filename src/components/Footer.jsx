@@ -1,7 +1,11 @@
 import React from 'react';
 import { Facebook, Instagram, Twitter } from 'lucide-react';
 
+import { useInstall } from '../context/InstallContext';
+
 const Footer = () => {
+    const { isInstalled, isIOS, deferredPrompt } = useInstall();
+
     return (
         <footer className="bg-dark text-gray-300 py-8 border-t border-gray-800">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,8 +22,12 @@ const Footer = () => {
                         <a href="#" className="hover:text-secondary transition-colors"><Twitter size={20} /></a>
                     </div>
 
-                    <div className="text-sm text-gray-500">
-                        &copy; {new Date().getFullYear()} Shaik's Restaurant. All rights reserved.
+                    <div className="text-sm text-gray-500 text-center md:text-right">
+                        <div>&copy; {new Date().getFullYear()} Shaik's Restaurant. All rights reserved.</div>
+                        <div className="text-xs text-gray-600 mt-1">
+                            v1.2 | {isInstalled ? 'App Installed' : 'Web Version'} | {isIOS ? 'iOS' : 'Android/PC'}
+                            {!isInstalled && !isIOS && !deferredPrompt && ' (Manual Install)'}
+                        </div>
                     </div>
                 </div>
             </div>
