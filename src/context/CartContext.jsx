@@ -67,6 +67,22 @@ export const CartProvider = ({ children }) => {
         return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
     };
 
+    const getWhatsAppMessage = (userDetails) => {
+        const itemsList = cartItems
+            .map((item) => `- ${item.name} x ${item.quantity} (₹${item.price * item.quantity})`)
+            .join('%0a');
+
+        const total = getCartTotal();
+
+        return `*New Order from ${userDetails.name}* %0a%0a` +
+            `*Items:*%0a${itemsList}%0a%0a` +
+            `*Total Amount:* ₹${total}%0a%0a` +
+            `*Delivery Details:*%0a` +
+            `Name: ${userDetails.name}%0a` +
+            `Phone: ${userDetails.phone}%0a` +
+            `Address: ${userDetails.address}`;
+    };
+
     const getCartCount = () => {
         return cartItems.reduce((count, item) => count + item.quantity, 0);
     };
