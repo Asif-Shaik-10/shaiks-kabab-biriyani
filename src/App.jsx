@@ -12,6 +12,7 @@ import Checkout from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
 import About from './pages/About';
 import Profile from './pages/Profile';
+import InstallPrompt from './components/InstallPrompt';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -31,6 +32,7 @@ const ProtectedRoute = ({ children }) => {
 function AppContent() {
   return (
     <Router>
+      <InstallPrompt />
       <Routes>
         {/* Auth Routes (No Layout) */}
         <Route path="/login" element={<Login />} />
