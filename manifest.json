@@ -1,0 +1,43 @@
+{
+    "name": "Shaik's Kabab ND Biriyani",
+    "short_name": "Shaik's Kabab",
+    "description": "Order delicious non-veg kababs and biriyani from Shaik's Kabab ND Biriyani",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "background_color": "#1a1a1a",
+    "theme_color": "#ff6b35",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": [
+        "food",
+        "lifestyle"
+    ],
+    "shortcuts": [
+        {
+            "name": "View Menu",
+            "short_name": "Menu",
+            "description": "Browse our delicious menu",
+            "url": "/menu",
+            "icons": [
+                {
+                    "src": "/icon-192x192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ]
+}
