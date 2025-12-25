@@ -17,7 +17,12 @@ export const CartProvider = ({ children }) => {
         // Load cart from localStorage
         const savedCart = localStorage.getItem('cart');
         if (savedCart) {
-            setCartItems(JSON.parse(savedCart));
+            try {
+                setCartItems(JSON.parse(savedCart));
+            } catch (error) {
+                console.error('Failed to parse cart from local storage:', error);
+                localStorage.removeItem('cart');
+            }
         }
     }, []);
 
@@ -67,22 +72,6 @@ export const CartProvider = ({ children }) => {
         return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
     };
 
-    const getWhatsAppMessage = (userDetails) => {
-        const itemsList = cartItems
-            .map((item) => `- ${item.name} x ${item.quantity} (₹${item.price * item.quantity})`)
-            .join('%0a');
-
-        const total = getCartTotal();
-
-        return `*New Order from ${userDetails.name}* %0a%0a` +
-            `*Items:*%0a${itemsList}%0a%0a` +
-            `*Total Amount:* ₹${total}%0a%0a` +
-            `*Delivery Details:*%0a` +
-            `Name: ${userDetails.name}%0a` +
-            `Phone: ${userDetails.phone}%0a` +
-            `Address: ${userDetails.address}`;
-    };
-
     const getCartCount = () => {
         return cartItems.reduce((count, item) => count + item.quantity, 0);
     };
@@ -99,6 +88,29 @@ export const CartProvider = ({ children }) => {
         return getCartTotal() + getTaxAmount() + getDeliveryFee();
     };
 
+    const getWhatsAppMessage = (userDetails) => {
+        const itemsList = cartItems
+            .map((item) => `- ${item.name} x ${item.quantity} (₹${item.price * item.quantity})`)
+            .join('%0a');
+
+        const total = getFinalTotal();
+        const subtotal = getCartTotal();
+        const tax = getTaxAmount();
+        const delivery = getDeliveryFee();
+
+        return `*New Order from ${userDetails.name}* %0a%0a` +
+            `*Items:*%0a${itemsList}%0a%0a` +
+            `*Subtotal:* ₹${subtotal}%0a` +
+            `*Tax (5%):* ₹${tax}%0a` +
+            `*Delivery:* ₹${delivery}%0a` +
+            `*Total Amount:* ₹${total}%0a%0a` +
+            `*Payment Status:* ${userDetails.paymentMethod === 'upi' ? 'Paid via UPI (Verify Screenshot)' : 'Cash on Delivery'}%0a%0a` +
+            `*Delivery Details:*%0a` +
+            `Name: ${userDetails.name}%0a` +
+            `Phone: ${userDetails.phone}%0a` +
+            `Address: ${userDetails.address}`;
+    };
+
     const value = {
         cartItems,
         addToCart,
@@ -109,7 +121,8 @@ export const CartProvider = ({ children }) => {
         getCartCount,
         getTaxAmount,
         getDeliveryFee,
-        getFinalTotal
+        getFinalTotal,
+        getWhatsAppMessage
     };
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

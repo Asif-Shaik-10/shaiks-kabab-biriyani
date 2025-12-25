@@ -78,6 +78,11 @@ const Login = () => {
                                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                 </button>
                             </div>
+                            <div className="flex justify-end mt-2">
+                                <Link to="/forgot-password" className="text-sm text-secondary hover:text-yellow-400 transition-colors">
+                                    Forgot Password?
+                                </Link>
+                            </div>
                         </div>
 
                         <button
@@ -101,6 +106,25 @@ const Login = () => {
                 <p className="text-center text-gray-500 text-sm mt-6">
                     Demo: Use any email/password to signup, then login with those credentials
                 </p>
+                <div className="mt-6 pt-6 border-t border-gray-800">
+                    <button
+                        onClick={() => {
+                            login('demo@example.com', 'demo123');
+                            // If login fails (user doesn't exist), signup first
+                            if (!localStorage.getItem('user')) {
+                                signup({
+                                    name: 'Demo User',
+                                    email: 'demo@example.com',
+                                    phone: '9999999999',
+                                    password: 'demo123'
+                                });
+                            }
+                        }}
+                        className="w-full bg-gray-800 text-gray-300 py-2 rounded-lg font-medium hover:bg-gray-700 transition-colors text-sm"
+                    >
+                        Try Demo Login (One Click)
+                    </button>
+                </div>
             </motion.div>
         </div>
     );

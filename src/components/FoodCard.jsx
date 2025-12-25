@@ -32,7 +32,7 @@ const FoodCard = ({ item }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ y: -5 }}
-            className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-100"
+            className="bg-dark-lighter rounded-2xl shadow-xl shadow-black/20 overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 border border-white/5"
         >
             <div className="relative h-56 overflow-hidden">
                 <img
@@ -54,8 +54,8 @@ const FoodCard = ({ item }) => {
             </div>
 
             <div className="p-5">
-                <h3 className="text-xl font-bold text-dark mb-2">{item.name}</h3>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-2">{item.description}</p>
+                <h3 className="text-xl font-bold text-light mb-2">{item.name}</h3>
+                <p className="text-gray-400 text-sm mb-4 line-clamp-2">{item.description}</p>
 
                 <div className="flex items-center justify-between mb-4">
                     <span className="text-2xl font-bold text-primary">₹{item.price}</span>
@@ -67,24 +67,24 @@ const FoodCard = ({ item }) => {
                 {!showQuantity ? (
                     <button
                         onClick={() => setShowQuantity(true)}
-                        className="w-full bg-dark hover:bg-primary text-white font-semibold py-3 rounded-lg transition-colors duration-300 flex items-center justify-center gap-2"
+                        className="w-full bg-white/5 hover:bg-primary text-white font-semibold py-3 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 border border-white/10 hover:border-transparent"
                     >
                         <ShoppingCart size={18} />
                         <span>Add to Cart</span>
                     </button>
                 ) : (
                     <div className="space-y-3">
-                        <div className="flex items-center justify-between bg-gray-100 rounded-lg p-2">
+                        <div className="flex items-center justify-between bg-white/5 rounded-lg p-2 border border-white/10">
                             <button
                                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                className="w-10 h-10 bg-white rounded-lg flex items-center justify-center hover:bg-gray-200 transition-colors"
+                                className="w-10 h-10 bg-dark rounded-lg flex items-center justify-center hover:bg-black/50 transition-colors text-white"
                             >
                                 <Minus size={18} />
                             </button>
                             <span className="font-bold text-lg">{quantity}</span>
                             <button
                                 onClick={() => setQuantity(quantity + 1)}
-                                className="w-10 h-10 bg-white rounded-lg flex items-center justify-center hover:bg-gray-200 transition-colors"
+                                className="w-10 h-10 bg-dark rounded-lg flex items-center justify-center hover:bg-black/50 transition-colors text-white"
                             >
                                 <Plus size={18} />
                             </button>

@@ -52,13 +52,35 @@ const Profile = () => {
                                 </div>
                             </div>
 
-                            <button
-                                onClick={handleLogout}
-                                className="w-full flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-semibold py-3 rounded-lg transition-colors"
-                            >
-                                <LogOut size={20} />
-                                Logout
-                            </button>
+                            <div className="pt-6 border-t border-gray-800">
+                                <button
+                                    onClick={logout}
+                                    className="w-full bg-red-600/20 text-red-500 py-3 rounded-lg font-bold hover:bg-red-600/30 transition-colors flex items-center justify-center gap-2"
+                                >
+                                    <LogOut className="w-5 h-5" />
+                                    Logout
+                                </button>
+
+                                <button
+                                    onClick={() => {
+                                        if (window.confirm('This will clear the app cache and reload. Continue?')) {
+                                            if ('serviceWorker' in navigator) {
+                                                navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                                                    for (let registration of registrations) {
+                                                        registration.unregister();
+                                                    }
+                                                    window.location.reload(true);
+                                                });
+                                            } else {
+                                                window.location.reload(true);
+                                            }
+                                        }
+                                    }}
+                                    className="w-full mt-4 bg-gray-800 text-gray-400 py-3 rounded-lg font-medium hover:bg-gray-700 transition-colors text-sm"
+                                >
+                                    Clear App Cache (Fix Issues)
+                                </button>
+                            </div>
                         </div>
                     </motion.div>
 

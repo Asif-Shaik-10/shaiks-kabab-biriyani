@@ -12,7 +12,7 @@ const Menu = () => {
         : menuItems.filter(item => item.category === selectedCategory);
 
     return (
-        <div className="min-h-screen bg-light py-12">
+        <div className="min-h-screen bg-dark py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <motion.div
@@ -20,15 +20,15 @@ const Menu = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="text-center mb-12"
                 >
-                    <h1 className="text-5xl font-bold text-dark mb-4 font-serif">Our Menu</h1>
-                    <p className="text-xl text-gray-600">Authentic non-veg delicacies crafted to perfection</p>
+                    <h1 className="text-5xl font-bold text-light mb-4 font-serif">Our Menu</h1>
+                    <p className="text-xl text-gray-400">Authentic non-veg delicacies crafted to perfection</p>
                 </motion.div>
 
                 {/* Category Filter */}
                 <div className="mb-12">
                     <div className="flex items-center justify-center gap-2 mb-6">
-                        <Filter size={20} className="text-gray-600" />
-                        <span className="text-gray-600 font-medium">Filter by category:</span>
+                        <Filter size={20} className="text-gray-400" />
+                        <span className="text-gray-400 font-medium">Filter by category:</span>
                     </div>
                     <div className="flex flex-wrap justify-center gap-3">
                         {menuCategories.map(category => (
@@ -36,8 +36,8 @@ const Menu = () => {
                                 key={category}
                                 onClick={() => setSelectedCategory(category)}
                                 className={`px-6 py-2.5 rounded-full font-medium transition-all duration-300 ${selectedCategory === category
-                                        ? 'bg-primary text-white shadow-lg scale-105'
-                                        : 'bg-white text-gray-700 hover:bg-gray-100 shadow'
+                                    ? 'bg-primary text-white shadow-lg scale-105'
+                                    : 'bg-dark-lighter text-gray-300 hover:bg-white/10 border border-white/5'
                                     }`}
                             >
                                 {category}
@@ -48,7 +48,7 @@ const Menu = () => {
 
                 {/* Items Count */}
                 <div className="mb-6">
-                    <p className="text-center text-gray-600">
+                    <p className="text-center text-gray-400">
                         Showing <span className="font-bold text-primary">{filteredItems.length}</span> items
                     </p>
                 </div>

@@ -35,7 +35,13 @@ const Signup = () => {
         if (result.success) {
             navigate('/');
         } else {
-            setError(result.error);
+            if (result.error === 'User already exists') {
+                // Optional: Automatically redirect to login or specific message
+                setError('User already exists. Please login instead.');
+                setTimeout(() => navigate('/login'), 2000);
+            } else {
+                setError(result.error);
+            }
         }
     };
 

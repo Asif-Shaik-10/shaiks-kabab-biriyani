@@ -7,10 +7,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#8B0000', // Deep Red
-        secondary: '#FFD700', // Gold
-        dark: '#1A1A1A', // Dark Gray
-        light: '#F5F5F5', // Off-white
+        primary: '#ff6b35', // Vibrant orange
+        secondary: '#bf3100', // Deep orange/red
+        dark: '#1a1a1a', // Rich black/gray
+        'dark-lighter': '#2a2a2a', // Slightly lighter dark for cards
+        light: '#f7fff7', // Off-white
+        accent: '#ec9f05', // Gold/Yellow accent
       },
       fontFamily: {
         sans: ['Outfit', 'sans-serif'],

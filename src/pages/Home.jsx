@@ -15,7 +15,7 @@ const Home = () => {
                 <div
                     className="absolute inset-0 bg-cover bg-center opacity-30"
                     style={{
-                        backgroundImage: 'url("https://images.unsplash.com/photo-1544025162-d76690b67f66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80")',
+                        backgroundImage: 'url("https://images.unsplash.com/photo-1633945274405-b6c8069047b0?q=80&w=2070&auto=format&fit=crop")',
                     }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-transparent" />

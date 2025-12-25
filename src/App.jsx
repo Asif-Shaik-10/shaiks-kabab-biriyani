@@ -15,6 +15,9 @@ import OrderSuccess from './pages/OrderSuccess';
 import About from './pages/About';
 import Profile from './pages/Profile';
 import InstallPrompt from './components/InstallPrompt';
+import ForgotPassword from './pages/ForgotPassword';
+import ReloadPrompt from './components/ReloadPrompt';
+import CheesyNotification from './components/CheesyNotification';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -31,14 +34,19 @@ const ProtectedRoute = ({ children }) => {
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
+
+
 function AppContent() {
   return (
-    <Router>
+    <Router basename={import.meta.env.BASE_URL}>
       <InstallPrompt />
+      <ReloadPrompt />
+      <CheesyNotification />
       <Routes>
         {/* Auth Routes (No Layout) */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* Main Routes (With Layout) */}
         <Route path="/" element={<Layout />}>

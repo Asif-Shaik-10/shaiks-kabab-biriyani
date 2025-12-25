@@ -4,7 +4,7 @@ import { useNavigate, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const Checkout = () => {
-    const { cartItems, getCartTotal, clearCart, getWhatsAppMessage } = useCart();
+    const { cartItems, getCartTotal, clearCart, getTaxAmount, getDeliveryFee, getFinalTotal } = useCart();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -21,22 +21,45 @@ const Checkout = () => {
         });
     };
 
-    const handleWhatsAppOrder = async (e) => {
+    const handleWhatsAppOrder = (e) => {
         e.preventDefault();
         setLoading(true);
 
-        // Simulate processing
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // 1. Construct the Order Message
+        const itemsList = cartItems.map(item => `- ${item.name} x ${item.quantity} (₹${item.price * item.quantity})`).join('%0a');
+        const subtotal = getCartTotal();
+        const tax = getTaxAmount();
+        const delivery = getDeliveryFee();
+        const total = getFinalTotal();
 
-        // Generate WhatsApp message
-        const message = getWhatsAppMessage(formData);
-        const phoneNumber = "919876543210"; // Replace with restaurant's phone number
+        const message = `*New Order from Website* 🍽️%0a%0a` +
+            `*Customer Details:*%0a` +
+            `Name: ${formData.name}%0a` +
+            `Phone: ${formData.phone}%0a` +
+            `Address: ${formData.address}%0a%0a` +
+            `*Order Summary:*%0a${itemsList}%0a%0a` +
+            `--------------------------------%0a` +
+            `Subtotal: ₹${subtotal}%0a` +
+            `Tax: ₹${tax}%0a` +
+            `Delivery: ${delivery === 0 ? 'Free' : '₹' + delivery}%0a` +
+            `*Total Amount: ₹${total}* 💰%0a` +
+            `--------------------------------%0a` +
+            `Payment Method: ${formData.paymentMethod === 'upi' ? 'UPI' : 'Cash on Delivery'}%0a` +
+            `%0aPlease confirm this order!`;
+
+        // 2. Your WhatsApp Number
+        const phoneNumber = "917780402204"; // Country code + Number
+
+        // 3. Create WhatsApp URL
         const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
 
-        // Clear cart and redirect
-        clearCart();
-        window.open(whatsappUrl, '_blank');
-        navigate('/order-success');
+        // 4. Redirect
+        window.location.href = whatsappUrl;
+
+        // Optionally clear cart after a delay or let them clear it manually after returning
+        setTimeout(() => {
+            clearCart();
+        }, 2000);
     };
 
     if (cartItems.length === 0) {
@@ -49,8 +72,8 @@ const Checkout = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Order Summary */}
-                <div className="bg-dark p-6 rounded-lg shadow-lg border border-gray-800 h-fit">
-                    <h3 className="text-xl font-bold text-white mb-4">Order Summary</h3>
+                <div className="bg-dark-lighter p-6 rounded-lg shadow-lg border border-white/10 h-fit">
+                    <h3 className="text-xl font-bold text-light mb-4">Order Summary</h3>
                     <div className="space-y-4 mb-4">
                         {cartItems.map((item) => (
                             <div key={item.id} className="flex justify-between items-center text-gray-300">
@@ -59,15 +82,32 @@ const Checkout = () => {
                             </div>
                         ))}
                     </div>
-                    <div className="border-t border-gray-700 pt-4 flex justify-between items-center text-xl font-bold text-secondary">
-                        <span>Total</span>
-                        <span>₹{getCartTotal()}</span>
+                    <div className="border-t border-gray-700 pt-4 space-y-2">
+                        <div className="flex justify-between items-center text-gray-400">
+                            <span>Subtotal</span>
+                            <span>₹{getCartTotal()}</span>
+                        </div>
+                        <div className="flex justify-between items-center text-gray-400">
+                            <span>Tax (5%)</span>
+                            <span>₹{getTaxAmount()}</span>
+                        </div>
+                        <div className="flex justify-between items-center text-gray-400">
+                            <span>Delivery Fee</span>
+                            <span>{getDeliveryFee() === 0 ? 'Free' : `₹${getDeliveryFee()}`}</span>
+                        </div>
+                        <div className="border-t border-gray-700 pt-2 flex justify-between items-center text-xl font-bold text-primary">
+                            <span>Total</span>
+                            <span>₹{getFinalTotal()}</span>
+                        </div>
                     </div>
                 </div>
 
                 {/* Checkout Form */}
-                <div className="bg-dark p-6 rounded-lg shadow-lg border border-gray-800">
-                    <h3 className="text-xl font-bold text-white mb-6">Delivery Details</h3>
+                <div className="bg-dark-lighter p-6 rounded-lg shadow-lg border border-white/10">
+                    <h3 className="text-xl font-bold text-light mb-6">Delivery Details</h3>
+                    <p className="text-gray-400 mb-6 text-sm">
+                        Fill in your details and click below to send your order directly to our WhatsApp!
+                    </p>
                     <form onSubmit={handleWhatsAppOrder} className="space-y-6">
                         <div>
                             <label className="block text-sm font-medium text-gray-400 mb-1">Full Name</label>
@@ -77,8 +117,8 @@ const Checkout = () => {
                                 required
                                 value={formData.name}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
-                                placeholder="John Doe"
+                                className="w-full px-4 py-2 bg-dark border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
+                                placeholder="Your Name"
                             />
                         </div>
                         <div>
@@ -89,8 +129,8 @@ const Checkout = () => {
                                 required
                                 value={formData.phone}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
-                                placeholder="+91 98765 43210"
+                                className="w-full px-4 py-2 bg-dark border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
+                                placeholder="Your Phone Number"
                             />
                         </div>
                         <div>
@@ -101,7 +141,7 @@ const Checkout = () => {
                                 value={formData.address}
                                 onChange={handleInputChange}
                                 rows="3"
-                                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
+                                className="w-full px-4 py-2 bg-dark border border-gray-700 rounded-lg text-white focus:outline-none focus:border-primary"
                                 placeholder="Flat No, Building, Street, Area"
                             ></textarea>
                         </div>
@@ -112,14 +152,14 @@ const Checkout = () => {
                                 disabled={loading}
                                 className="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
                             >
-                                {loading ? 'Processing...' : (
+                                {loading ? 'Opening WhatsApp...' : (
                                     <>
                                         <span>Place Order via WhatsApp</span>
                                     </>
                                 )}
                             </button>
                             <p className="text-xs text-gray-500 text-center mt-2">
-                                You can pay via UPI or Cash upon delivery confirmation on WhatsApp.
+                                This will open WhatsApp with your order details pre-filled.
                             </p>
                         </div>
                     </form>

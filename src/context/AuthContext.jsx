@@ -18,14 +18,25 @@ export const AuthProvider = ({ children }) => {
         // Check if user is logged in (from localStorage)
         const savedUser = localStorage.getItem('user');
         if (savedUser) {
-            setUser(JSON.parse(savedUser));
+            try {
+                setUser(JSON.parse(savedUser));
+            } catch (error) {
+                console.error('Failed to parse user from local storage:', error);
+                localStorage.removeItem('user');
+            }
         }
         setLoading(false);
     }, []);
 
     const login = (email, password) => {
         // Demo login - in production, this would call an API
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        let users = [];
+        try {
+            users = JSON.parse(localStorage.getItem('users') || '[]');
+        } catch (error) {
+            console.error('Failed to parse users from local storage:', error);
+            users = [];
+        }
         const foundUser = users.find(u => u.email === email && u.password === password);
 
         if (foundUser) {
@@ -40,7 +51,13 @@ export const AuthProvider = ({ children }) => {
 
     const signup = (userData) => {
         // Demo signup - in production, this would call an API
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        let users = [];
+        try {
+            users = JSON.parse(localStorage.getItem('users') || '[]');
+        } catch (error) {
+            console.error('Failed to parse users from local storage:', error);
+            users = [];
+        }
 
         // Check if user already exists
         if (users.find(u => u.email === userData.email)) {
@@ -69,11 +86,33 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('user');
     };
 
+    const resetPassword = (email, newPassword) => {
+        let users = [];
+        try {
+            users = JSON.parse(localStorage.getItem('users') || '[]');
+        } catch (error) {
+            console.error('Failed to parse users:', error);
+            return { success: false, error: 'System error' };
+        }
+
+        const userIndex = users.findIndex(u => u.email === email);
+        if (userIndex === -1) {
+            return { success: false, error: 'Email not found' };
+        }
+
+        // Update password
+        users[userIndex].password = newPassword;
+        localStorage.setItem('users', JSON.stringify(users));
+
+        return { success: true };
+    };
+
     const value = {
         user,
         login,
         signup,
         logout,
+        resetPassword,
         loading,
         isAuthenticated: !!user
     };

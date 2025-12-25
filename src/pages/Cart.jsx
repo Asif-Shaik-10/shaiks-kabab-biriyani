@@ -28,15 +28,15 @@ const Cart = () => {
 
     if (cartItems.length === 0) {
         return (
-            <div className="min-h-screen bg-light flex items-center justify-center px-4">
+            <div className="min-h-screen bg-dark flex items-center justify-center px-4 pt-24">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     className="text-center"
                 >
-                    <ShoppingBag size={80} className="mx-auto text-gray-300 mb-6" />
-                    <h2 className="text-3xl font-bold text-dark mb-4">Your cart is empty</h2>
-                    <p className="text-gray-600 mb-8">Add some delicious items to get started!</p>
+                    <ShoppingBag size={80} className="mx-auto text-gray-500 mb-6" />
+                    <h2 className="text-3xl font-bold text-light mb-4">Your cart is empty</h2>
+                    <p className="text-gray-400 mb-8">Add some delicious items to get started!</p>
                     <Link
                         to="/menu"
                         className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-full font-semibold hover:bg-red-700 transition-colors"
@@ -50,12 +50,12 @@ const Cart = () => {
     }
 
     return (
-        <div className="min-h-screen bg-light py-12">
+        <div className="min-h-screen bg-dark pt-24 pb-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <motion.h1
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-4xl font-bold text-dark mb-8 font-serif"
+                    className="text-4xl font-bold text-light mb-8 font-serif"
                 >
                     Shopping Cart ({cartItems.length} {cartItems.length === 1 ? 'item' : 'items'})
                 </motion.h1>
@@ -70,48 +70,48 @@ const Cart = () => {
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: 20 }}
-                                    className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow"
+                                    className="bg-dark-lighter rounded-xl shadow-md p-4 sm:p-6 hover:shadow-lg transition-shadow border border-white/5"
                                 >
-                                    <div className="flex gap-6">
+                                    <div className="flex flex-col sm:flex-row gap-6">
                                         <img
                                             src={item.image}
                                             alt={item.name}
-                                            className="w-32 h-32 object-cover rounded-lg"
+                                            className="w-full sm:w-32 h-48 sm:h-32 object-cover rounded-lg"
                                         />
 
                                         <div className="flex-1">
                                             <div className="flex justify-between items-start mb-3">
                                                 <div>
-                                                    <h3 className="text-xl font-bold text-dark mb-1">{item.name}</h3>
-                                                    <p className="text-sm text-gray-500">{item.category}</p>
+                                                    <h3 className="text-xl font-bold text-light mb-1">{item.name}</h3>
+                                                    <p className="text-sm text-gray-400">{item.category}</p>
                                                 </div>
                                                 <button
                                                     onClick={() => removeFromCart(item.id)}
-                                                    className="text-red-500 hover:text-red-700 transition-colors p-2 hover:bg-red-50 rounded-lg"
+                                                    className="text-red-500 hover:text-red-400 transition-colors p-2 hover:bg-red-500/10 rounded-lg"
                                                 >
                                                     <Trash2 size={20} />
                                                 </button>
                                             </div>
 
-                                            <div className="flex items-center justify-between">
-                                                <div className="flex items-center gap-3 bg-gray-100 rounded-lg p-2">
+                                            <div className="flex flex-wrap items-center justify-between gap-4">
+                                                <div className="flex items-center gap-3 bg-black/20 rounded-lg p-2 border border-white/5">
                                                     <button
                                                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                                        className="w-8 h-8 bg-white rounded flex items-center justify-center hover:bg-gray-200 transition-colors"
+                                                        className="w-8 h-8 bg-white/10 rounded flex items-center justify-center hover:bg-primary hover:text-white transition-colors text-white"
                                                     >
                                                         <Minus size={16} />
                                                     </button>
-                                                    <span className="font-bold min-w-[30px] text-center">{item.quantity}</span>
+                                                    <span className="font-bold min-w-[30px] text-center text-white">{item.quantity}</span>
                                                     <button
                                                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                        className="w-8 h-8 bg-white rounded flex items-center justify-center hover:bg-gray-200 transition-colors"
+                                                        className="w-8 h-8 bg-white/10 rounded flex items-center justify-center hover:bg-primary hover:text-white transition-colors text-white"
                                                     >
                                                         <Plus size={16} />
                                                     </button>
                                                 </div>
 
                                                 <div className="text-right">
-                                                    <p className="text-sm text-gray-500">₹{item.price} each</p>
+                                                    <p className="text-sm text-gray-400">₹{item.price} each</p>
                                                     <p className="text-2xl font-bold text-primary">₹{item.price * item.quantity}</p>
                                                 </div>
                                             </div>
@@ -127,24 +127,24 @@ const Cart = () => {
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-white rounded-xl shadow-lg p-6 sticky top-24"
+                            className="bg-dark-lighter rounded-xl shadow-lg p-6 sticky top-24 border border-white/10"
                         >
-                            <h2 className="text-2xl font-bold text-dark mb-6">Order Summary</h2>
+                            <h2 className="text-2xl font-bold text-light mb-6">Order Summary</h2>
 
                             <div className="space-y-4 mb-6">
-                                <div className="flex justify-between text-gray-600">
+                                <div className="flex justify-between text-gray-400">
                                     <span>Subtotal</span>
-                                    <span className="font-semibold">₹{getCartTotal()}</span>
+                                    <span className="font-semibold text-gray-200">₹{getCartTotal()}</span>
                                 </div>
-                                <div className="flex justify-between text-gray-600">
+                                <div className="flex justify-between text-gray-400">
                                     <span>GST (5%)</span>
-                                    <span className="font-semibold">₹{getTaxAmount().toFixed(2)}</span>
+                                    <span className="font-semibold text-gray-200">₹{getTaxAmount().toFixed(2)}</span>
                                 </div>
-                                <div className="flex justify-between text-gray-600">
+                                <div className="flex justify-between text-gray-400">
                                     <span>Delivery Fee</span>
-                                    <span className="font-semibold">
+                                    <span className="font-semibold text-gray-200">
                                         {getDeliveryFee() === 0 ? (
-                                            <span className="text-green-600">FREE</span>
+                                            <span className="text-green-500">FREE</span>
                                         ) : (
                                             `₹${getDeliveryFee()}`
                                         )}
@@ -152,13 +152,13 @@ const Cart = () => {
                                 </div>
 
                                 {getDeliveryFee() > 0 && (
-                                    <p className="text-xs text-gray-500 bg-yellow-50 p-2 rounded">
+                                    <p className="text-xs text-gray-400 bg-white/5 p-2 rounded border border-white/5">
                                         Add ₹{500 - getCartTotal()} more for free delivery
                                     </p>
                                 )}
 
-                                <div className="border-t pt-4 flex justify-between items-center">
-                                    <span className="text-xl font-bold text-dark">Total</span>
+                                <div className="border-t border-gray-700 pt-4 flex justify-between items-center">
+                                    <span className="text-xl font-bold text-light">Total</span>
                                     <span className="text-2xl font-bold text-primary">₹{getFinalTotal().toFixed(2)}</span>
                                 </div>
                             </div>
